@@ -1,0 +1,8 @@
+todo app
+
+learn indexdb,fs,redux,promises,testing,
+
+
+hooks analyze hooks
+useEffect
+useState

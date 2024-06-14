@@ -1,0 +1,155 @@
+import { useState } from 'react'
+import viteLogo from '/vite.svg'
+import './App.css'
+import { faker } from '@faker-js/faker';
+
+import {isEmpty} from 'lodash';
+import { useEffect } from 'react';
+
+
+
+function App() {
+
+const [data, setData] = useState([]);
+
+useEffect(() => {
+	let isMounted = true;
+
+	console.log('rendering');
+
+	async function getData() {
+		const users = [];
+
+		for (let i = 0; i < 5; i++) {
+			const user = createUser();
+			users.push(user);
+		}
+
+		if (isMounted) {
+			setData(users);
+			console.log('is mounted');
+
+		}
+	}
+
+	getData();
+
+	return () => {
+		isMounted = false;
+			console.log('is unmounted');
+
+	};
+}, []); 
+
+	const createUser = () => {
+		const name = faker.person.fullName();
+		const email = faker.internet.email();
+		const address = faker.location.streetAddress();
+		const bio = faker.lorem.sentence();
+		const image = faker.image.avatar();
+
+		return {
+			name,
+			email,
+			address,
+			bio,
+			image,
+		};
+	};
+
+
+// create
+
+// const fs = require('fs');
+// const path = require('path');
+
+const onAdd = ()=>{
+
+	// const directory = 'localdb';
+	// const database = 'database.json';
+
+	// if(!fs.existsSync(directory)){
+	// 	fs.mkdirSync(dir);
+	// }else{
+	// 	fs.writeFile(path.join(directory, database), (err) => {
+	// 		if (err) {
+	// 			console.log(err);
+	// 		} else {
+	// 			console.log('success');
+	// 		}
+	// 	});
+	// }
+
+
+
+
+}
+
+
+    return (
+			<div className='mx-auto'>
+				<header>
+					<img src={viteLogo} alt='Logo.png' width={80} height={80} />
+					<nav>
+						<ul>
+							<li>Home</li>
+							<li>About</li>
+							<li>Profile</li>
+						</ul>
+					</nav>
+				</header>
+
+				<div>
+					<label htmlFor='searchInput'>Search</label>
+					<input type='search' name='searchfield' id='searchInput' />
+				</div>
+
+				<div className='flex my-5 justify-end'>
+					<button onClick={onAdd} className='btn bg-indigo-600 px-5 py-2 rounded shadow-md text-white'>Add</button>
+				</div>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Email</th>
+							<th>Address</th>
+							<th>Bio</th>
+							<th>Image</th>
+
+							<th colSpan={2}>Action</th>
+						</tr>
+					</thead>
+					<tbody className='leading-12'>
+						{!isEmpty(data) &&
+							data.map((list, i) => (
+								<tr key={i + 1}>
+									<td>{list.name}</td>
+									<td>{list.email}</td>
+									<td>{list.address}</td>
+									<td>{list.bio}</td>
+									<td>
+										<img src={list.image} alt='Logo.png' className='my-4' width={80} height={80} />
+									</td>
+									<td>
+										<button className='btn bg-green-600 px-5 py-2 rounded shadow-md text-white mx-4'>Edit</button>
+									</td>
+
+									<td>
+										<button className='btn bg-red-600 px-5 py-2 rounded shadow-md text-white  mx-4'>Delete</button>
+									</td>
+								</tr>
+							))}
+					</tbody>
+				</table>
+
+				<div className='flex gap-1 justify-end'>
+					<span>{'Prev'}</span>
+					<span>|</span>
+					<span>{'Next'}</span>
+				</div>
+			</div>
+		);
+}
+
+export default App
